@@ -11,37 +11,55 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.palmscanner.ui.theme.PalmScannerTheme
+import com.example.palmscanner.view.HomeView
+import com.example.palmscanner.view.IncomeView
+import com.example.palmscanner.view.ProfileView
+import com.example.palmscanner.view.components.BottomNavigationBar
+import com.example.palmscanner.view.components.BottomNavigationBarItems
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            PalmScannerTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+            MainScreen()
         }
     }
 }
 
+
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun MainScreen() {
+    val navController = rememberNavController()
+    Scaffold(
+        bottomBar = { BottomNavigationBar(navController) }
+    ) { innerPadding ->
+        NavHostContainer(navController = navController, modifier = Modifier.padding(innerPadding))
+    }
 }
 
-@Preview(showBackground = true)
+@Composable
+fun NavHostContainer(navController: NavHostController, modifier: Modifier = Modifier) {
+    NavHost(
+        navController = navController,
+        startDestination = BottomNavigationBarItems.Home.route,
+        modifier = modifier
+    ) {
+        composable(BottomNavigationBarItems.Home.route) { HomeView() }
+        composable(BottomNavigationBarItems.Transactions.route) { IncomeView() }
+        composable(BottomNavigationBarItems.Profile.route) { ProfileView() }
+    }
+}
+
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun GreetingPreview() {
     PalmScannerTheme {
-        Greeting("Android")
+        MainScreen()
     }
 }
