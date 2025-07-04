@@ -104,7 +104,7 @@ fun TransactionsView(
                     textAlign = androidx.compose.ui.text.style.TextAlign.Center
                 )
                 Text(
-                    text = if (selectedTab.value == 0)
+                    text = if (selectedTab.value == 1)
                         formatCurrency(viewModel.getTotalSpending())
                     else
                         formatCurrency(viewModel.getTotalEarnings()),
@@ -155,7 +155,7 @@ fun TransactionsView(
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                if (selectedTab.value == 0) {
+                if (selectedTab.value == 1) {
                     // Spending - Show Employee Salaries
                     items(employees) { employee ->
                         TransactionItem(
