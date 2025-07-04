@@ -19,12 +19,15 @@ import com.example.palmscanner.ui.theme.PalmScannerTheme
 import com.example.palmscanner.view.HomeView
 import com.example.palmscanner.view.IncomeView
 import com.example.palmscanner.view.ProfileView
+import com.example.palmscanner.view.TransactionsView
 import com.example.palmscanner.view.components.BottomNavigationBar
 import com.example.palmscanner.view.components.BottomNavigationBarItems
+import com.google.firebase.FirebaseApp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FirebaseApp.initializeApp(this)
         enableEdgeToEdge()
         setContent {
             MainScreen()
@@ -51,7 +54,7 @@ fun NavHostContainer(navController: NavHostController, modifier: Modifier = Modi
         modifier = modifier
     ) {
         composable(BottomNavigationBarItems.Home.route) { HomeView() }
-        composable(BottomNavigationBarItems.Transactions.route) { IncomeView() }
+        composable(BottomNavigationBarItems.Transactions.route) { TransactionsView() }
         composable(BottomNavigationBarItems.Profile.route) { ProfileView() }
     }
 }
