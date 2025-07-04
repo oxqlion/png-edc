@@ -20,7 +20,7 @@ data class Merchant(
     val name: String,
     val dealTitle: String,
     val dealDescription: String,
-    val imageUrl: String? = null,
+    val imageUrl: Int? = null,
     val latitude: Double? = null,
     val longitude: Double? = null
 )
@@ -29,7 +29,7 @@ data class GreenCampaign(
     val id: String,
     val title: String,
     val description: String,
-    val imageUrl: String? = null,
+    val imageUrl: Int? = null,
     val category: String
 )
 

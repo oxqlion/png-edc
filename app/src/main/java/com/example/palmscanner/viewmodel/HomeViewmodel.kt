@@ -2,6 +2,7 @@ package com.example.palmscanner.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.palmscanner.R
 import com.example.palmscanner.model.BankCard
 import com.example.palmscanner.model.GreenCampaign
 import com.example.palmscanner.model.HomeUiState
@@ -80,26 +81,29 @@ class HomeViewModel : ViewModel() {
                 id = "1",
                 name = "KFC",
                 dealTitle = "BUY 5 GET 3 CHICKEN HOT & CRISPY FREE!",
-                dealDescription = "Get extra crispy chicken with amazing deals"
+                dealDescription = "Get extra crispy chicken with amazing deals",
+                imageUrl = R.drawable.hot1
             ),
             Merchant(
                 id = "2",
                 name = "Burger King",
                 dealTitle = "BUY 1 GET 1 BEEF BURGER FREE!",
-                dealDescription = "Double the taste, double the fun"
+                dealDescription = "Double the taste, double the fun",
+                imageUrl = R.drawable.hot2
             ),
             Merchant(
                 id = "3",
                 name = "McDonald's",
                 dealTitle = "3 PACK NUGGETS FOR ONLY 25K!",
-                dealDescription = "Crispy nuggets at unbeatable price"
+                dealDescription = "Crispy nuggets at unbeatable price",
+                imageUrl = R.drawable.hot3
             ),
-            Merchant(
-                id = "4",
-                name = "Pizza Hut",
-                dealTitle = "BUY 2 GET 1 PIZZA FREE!",
-                dealDescription = "Share the joy with friends and family"
-            )
+//            Merchant(
+//                id = "4",
+//                name = "Pizza Hut",
+//                dealTitle = "BUY 2 GET 1 PIZZA FREE!",
+//                dealDescription = "Share the joy with friends and family"
+//            )
         )
     }
 
@@ -109,26 +113,29 @@ class HomeViewModel : ViewModel() {
                 id = "1",
                 title = "Tarik Cts. Green Indonesia",
                 description = "Hari ini di Pameran Hari Lingkungan Hidup...",
-                category = "Environment"
+                category = "Environment",
+                imageUrl = R.drawable.green1
             ),
             GreenCampaign(
                 id = "2",
                 title = "KELAKASA",
                 description = "Masih dalam semangat memperingati Hari Lingkungan...",
-                category = "Sustainability"
+                category = "Sustainability",
+                imageUrl = R.drawable.green2
             ),
             GreenCampaign(
                 id = "3",
                 title = "Pilum yang Mendaur Ulang",
                 description = "Sisa yang berguna tak lagi mengotori tanah Indonesia...",
-                category = "Recycling"
+                category = "Recycling",
+                imageUrl = R.drawable.green3
             ),
-            GreenCampaign(
-                id = "4",
-                title = "Clean Water Initiative",
-                description = "Bringing clean water to remote areas",
-                category = "Water"
-            )
+//            GreenCampaign(
+//                id = "4",
+//                title = "Clean Water Initiative",
+//                description = "Bringing clean water to remote areas",
+//                category = "Water"
+//            )
         )
     }
 

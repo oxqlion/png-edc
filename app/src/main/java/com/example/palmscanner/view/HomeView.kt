@@ -2,6 +2,7 @@ package com.example.palmscanner.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -17,17 +18,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.palmscanner.MainScreen
+import com.example.palmscanner.R
 import com.example.palmscanner.viewmodel.HomeViewModel
 import com.example.palmscanner.model.BankCard
 import com.example.palmscanner.model.Merchant
 import com.example.palmscanner.model.GreenCampaign
+import com.example.palmscanner.ui.theme.PalmScannerTheme
+
+import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.unit.IntOffset
+import kotlin.math.roundToInt
 
 @Composable
 fun HomeView(
@@ -322,12 +334,24 @@ fun MerchantDealCard(merchant: Merchant) {
     ) {
         Column {
             // Placeholder for merchant image
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(120.dp)
-                    .background(Color.Gray.copy(alpha = 0.3f))
-            )
+//            Box(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .height(120.dp)
+//                    .background(Color.Gray.copy(alpha = 0.3f))
+//            )
+
+            merchant.imageUrl?.let { painterResource(id = it) }?.let {
+                Image(
+                    painter = it,
+                    contentDescription = merchant.name,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(120.dp)
+                )
+            }
+
 
             Column(
                 modifier = Modifier.padding(8.dp)
@@ -354,9 +378,13 @@ fun MerchantDealCard(merchant: Merchant) {
 fun NearbyMerchantSection(
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier
-    ) {
+    var offsetX by remember { mutableStateOf(0f) }
+    var offsetY by remember { mutableStateOf(0f) }
+
+    // Adjustable zoom scale - increase for more zoom
+    val zoomScale = 5.0f
+
+    Column(modifier = modifier) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(bottom = 8.dp)
@@ -376,7 +404,7 @@ fun NearbyMerchantSection(
             modifier = Modifier.padding(bottom = 12.dp)
         )
 
-        // Placeholder for map
+        // Draggable dummy map with custom zoom
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -386,13 +414,29 @@ fun NearbyMerchantSection(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.Gray.copy(alpha = 0.3f)),
-                contentAlignment = Alignment.Center
+                    .clipToBounds()
+                    .pointerInput(Unit) {
+                        detectDragGestures { change, dragAmount ->
+                            change.consume()
+
+                            // Calculate bounds based on zoom scale
+                            val maxOffsetX = (size.width * (zoomScale - 1)) / 2
+                            val maxOffsetY = (size.height * (zoomScale - 1)) / 2
+
+                            // Update offsets with bounds
+                            offsetX = (offsetX + dragAmount.x).coerceIn(-maxOffsetX, maxOffsetX)
+                            offsetY = (offsetY + dragAmount.y).coerceIn(-maxOffsetY, maxOffsetY)
+                        }
+                    }
             ) {
-                Text(
-                    text = "Map Placeholder",
-                    color = Color.Gray,
-                    fontSize = 16.sp
+                Image(
+                    painter = painterResource(id = R.drawable.dummy_map),
+                    contentDescription = "Dummy Map",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .scale(zoomScale) // Custom zoom scale
+                        .offset { IntOffset(offsetX.roundToInt(), offsetY.roundToInt()) }
+                        .fillMaxSize()
                 )
             }
         }
@@ -443,12 +487,24 @@ fun GreenCampaignCard(campaign: GreenCampaign) {
     ) {
         Column {
             // Placeholder for campaign image
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(120.dp)
-                    .background(Color.Green.copy(alpha = 0.3f))
-            )
+//            Box(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .height(120.dp)
+//                    .background(Color.Green.copy(alpha = 0.3f))
+//            )
+
+            campaign.imageUrl?.let { painterResource(id = it) }?.let {
+                Image(
+                    painter = it,
+                    contentDescription = campaign.title,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(120.dp)
+                )
+            }
+
 
             Column(
                 modifier = Modifier.padding(8.dp)
@@ -469,5 +525,13 @@ fun GreenCampaignCard(campaign: GreenCampaign) {
                 )
             }
         }
+    }
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun GreetingPreview() {
+    PalmScannerTheme {
+        HomeView(homeViewModel = HomeViewModel())
     }
 }
